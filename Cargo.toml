@@ -1,0 +1,15 @@
+[package]
+name = "node_exporter_rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+slog = "2.7.0"
+slog-async = "2.7.0"
+slog-term = "2.7.0"
+hyper = "1.5.2"
+tokio = { version = "1", features = ["full"] }
+rtnetlink = "0.14.1"
+protobuf = "2.0.0"
+xxhash = "0.0.8"
+lazy_static = "1.5.0"

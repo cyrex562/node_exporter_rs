@@ -37,3 +37,8 @@ collector/fixtures/sys/
 collector/fixtures/udev/
 
 /vendor
+
+
+# Added by cargo
+
+/target
