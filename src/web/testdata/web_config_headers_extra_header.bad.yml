@@ -1,3 +1,0 @@
-http_server_config:
-  headers:
-    Content-Type: foo

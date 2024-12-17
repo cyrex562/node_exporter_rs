@@ -1,0 +1,9 @@
+C:\Users\azrael-laptop-1\projects\node_exporter_rs\target\debug\deps\liblibc-96e39da244106665.rmeta: C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src/lib.rs C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src\macros.rs C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src\fixed_width_ints.rs C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src\windows\mod.rs C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src\windows\msvc\mod.rs
+
+C:\Users\azrael-laptop-1\projects\node_exporter_rs\target\debug\deps\libc-96e39da244106665.d: C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src/lib.rs C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src\macros.rs C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src\fixed_width_ints.rs C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src\windows\mod.rs C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src\windows\msvc\mod.rs
+
+C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src/lib.rs:
+C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src\macros.rs:
+C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src\fixed_width_ints.rs:
+C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src\windows\mod.rs:
+C:\Users\azrael-laptop-1\.cargo\registry\src\index.crates.io-6f17d22bba15001f\libc-0.2.168\src\windows\msvc\mod.rs:
