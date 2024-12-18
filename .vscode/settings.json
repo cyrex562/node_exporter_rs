@@ -1,7 +1,12 @@
 {
     "cSpell.words": [
+        "Btrfs",
+        "ctree",
+        "nodesize",
         "prost",
         "reqwest",
-        "rtnetlink"
+        "rtnetlink",
+        "sectorsize",
+        "sysfs"
     ]
 }
