@@ -10,6 +10,7 @@ slog-term = "2.7.0"
 hyper = "1.5.2"
 tokio = { version = "1", features = ["full"] }
 rtnetlink = "0.14.1"
-protobuf = "2.0.0"
+protobuf = "3.7.1"
 xxhash = "0.0.8"
 lazy_static = "1.5.0"
+reqwest = { version = "0.12.9", features = ["blocking"] }
