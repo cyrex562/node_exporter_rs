@@ -202,3 +202,164 @@ pub fn must_new_metric_with_exemplars(
 ) -> Box<dyn Metric> {
     new_metric_with_exemplars(metric, exemplars).unwrap()
 }
+
+use std::cmp::Ordering;
+use std::slice;
+use std::vec::Vec;
+
+#[derive(Debug)]
+struct LabelPair {
+    name: String,
+    value: String,
+}
+
+impl LabelPair {
+    fn get_name(&self) -> &str {
+        &self.name
+    }
+
+    fn get_value(&self) -> &str {
+        &self.value
+    }
+}
+
+#[derive(Debug)]
+struct Metric {
+    label: Vec<LabelPair>,
+    timestamp_ms: Option<i64>,
+}
+
+impl Metric {
+    fn get_timestamp_ms(&self) -> Option<i64> {
+        self.timestamp_ms
+    }
+}
+
+#[derive(Debug)]
+struct MetricFamily {
+    metric: Vec<Metric>,
+}
+
+struct LabelPairSorter<'a>(&'a mut [LabelPair]);
+
+impl<'a> LabelPairSorter<'a> {
+    fn sort(&mut self) {
+        self.0.sort_by(|a, b| a.get_name().cmp(b.get_name()));
+    }
+}
+
+struct MetricSorter<'a>(&'a mut [Metric]);
+
+impl<'a> MetricSorter<'a> {
+    fn sort(&mut self) {
+        self.0.sort_by(|a, b| {
+            if a.label.len() != b.label.len() {
+                return a.label.len().cmp(&b.label.len());
+            }
+            for (lp_a, lp_b) in a.label.iter().zip(&b.label) {
+                let vi = lp_a.get_value();
+                let vj = lp_b.get_value();
+                if vi != vj {
+                    return vi.cmp(vj);
+                }
+            }
+            match (a.get_timestamp_ms(), b.get_timestamp_ms()) {
+                (Some(ts_a), Some(ts_b)) => ts_a.cmp(&ts_b),
+                (None, Some(_)) => Ordering::Greater,
+                (Some(_), None) => Ordering::Less,
+                (None, None) => Ordering::Equal,
+            }
+        });
+    }
+}
+
+fn normalize_metric_families(
+    metric_families_by_name: &mut HashMap<String, MetricFamily>,
+) -> Vec<MetricFamily> {
+    for mf in metric_families_by_name.values_mut() {
+        MetricSorter(&mut mf.metric).sort();
+    }
+    let mut names: Vec<String> = metric_families_by_name
+        .iter()
+        .filter_map(|(name, mf)| {
+            if !mf.metric.is_empty() {
+                Some(name.clone())
+            } else {
+                None
+            }
+        })
+        .collect();
+    names.sort();
+    names
+        .into_iter()
+        .filter_map(|name| metric_families_by_name.remove(&name))
+        .collect()
+}
+
+fn main() {
+    // Example usage
+    let mut metric_families_by_name = HashMap::new();
+    metric_families_by_name.insert(
+        "family1".to_string(),
+        MetricFamily {
+            metric: vec![
+                Metric {
+                    label: vec![
+                        LabelPair {
+                            name: "label1".to_string(),
+                            value: "value1".to_string(),
+                        },
+                        LabelPair {
+                            name: "label2".to_string(),
+                            value: "value2".to_string(),
+                        },
+                    ],
+                    timestamp_ms: Some(1000),
+                },
+                Metric {
+                    label: vec![
+                        LabelPair {
+                            name: "label1".to_string(),
+                            value: "value1".to_string(),
+                        },
+                        LabelPair {
+                            name: "label2".to_string(),
+                            value: "value3".to_string(),
+                        },
+                    ],
+                    timestamp_ms: Some(2000),
+                },
+            ],
+        },
+    );
+
+    let normalized = normalize_metric_families(&mut metric_families_by_name);
+    println!("{:?}", normalized);
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub enum MetricType {
+    Counter,
+    Gauge,
+    Histogram,
+    GaugeHistogram,
+    Summary,
+    Info,
+    StateSet,
+    Unknown,
+}
+
+impl MetricType {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            MetricType::Counter => "counter",
+            MetricType::Gauge => "gauge",
+            MetricType::Histogram => "histogram",
+            MetricType::GaugeHistogram => "gaugehistogram",
+            MetricType::Summary => "summary",
+            MetricType::Info => "info",
+            MetricType::StateSet => "stateset",
+            MetricType::Unknown => "unknown",
+        }
+    }
+}
