@@ -56,3 +56,67 @@ impl Collector for ExpvarCollector {
         Vec::new()
     }
 }
+
+use prometheus::{Collector, Desc, Metric, proto::MetricFamily};
+use serde_json::Value;
+use std::collections::HashMap;
+use std::sync::Mutex;
+
+struct ExpvarCollector {
+    exports: HashMap<String, Desc>,
+}
+
+impl ExpvarCollector {
+    fn new(exports: HashMap<String, Desc>) -> Self {
+        ExpvarCollector { exports }
+    }
+}
+
+impl Collector for ExpvarCollector {
+    fn describe(&self, descs: &mut Vec<&Desc>) {
+        for desc in self.exports.values() {
+            descs.push(desc);
+        }
+    }
+
+    fn collect(&self, mfs: &mut Vec<MetricFamily>) {
+        for (name, desc) in &self.exports {
+            if let Some(exp_var) = expvar::get(name) {
+                let mut labels = vec![String::new(); desc.variable_labels.len()];
+                if let Ok(v) = serde_json::from_str::<Value>(&exp_var.to_string()) {
+                    self.process_value(&v, 0, &mut labels, desc, mfs);
+                } else {
+                    mfs.push(prometheus::new_invalid_metric(desc, "Failed to unmarshal expvar"));
+                }
+            }
+        }
+    }
+}
+
+impl ExpvarCollector {
+    fn process_value(&self, v: &Value, i: usize, labels: &mut Vec<String>, desc: &Desc, mfs: &mut Vec<MetricFamily>) {
+        if i >= labels.len() {
+            let copied_labels = labels.clone();
+            match v {
+                Value::Number(num) => {
+                    if let Some(f) = num.as_f64() {
+                        mfs.push(prometheus::new_const_metric(desc, prometheus::proto::MetricType::UNTYPED, f, &copied_labels));
+                    }
+                }
+                Value::Bool(b) => {
+                    let val = if *b { 1.0 } else { 0.0 };
+                    mfs.push(prometheus::new_const_metric(desc, prometheus::proto::MetricType::UNTYPED, val, &copied_labels));
+                }
+                _ => {}
+            }
+            return;
+        }
+
+        if let Value::Object(map) = v {
+            for (lv, val) in map {
+                labels[i] = lv.clone();
+                self.process_value(val, i + 1, labels, desc, mfs);
+            }
+        }
+    }
+}

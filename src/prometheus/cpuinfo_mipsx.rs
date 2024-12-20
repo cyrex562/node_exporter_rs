@@ -1,0 +1,2 @@
+#[cfg(all(target_os = "linux", any(target_arch = "mips", target_arch = "mips64", target_arch = "mips64r6", target_arch = "mips64el", target_arch = "mipsel")))]
+use crate::parse_cpu_info_mips as parse_cpu_info;
