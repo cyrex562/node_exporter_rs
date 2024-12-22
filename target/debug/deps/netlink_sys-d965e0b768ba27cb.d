@@ -1,0 +1,11 @@
+D:\projects\node_exporter_rs\target\debug\deps\libnetlink_sys-d965e0b768ba27cb.rmeta: C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src/lib.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\constants.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\socket.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\addr.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\async_socket.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\async_socket_ext.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\tokio.rs
+
+D:\projects\node_exporter_rs\target\debug\deps\netlink_sys-d965e0b768ba27cb.d: C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src/lib.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\constants.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\socket.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\addr.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\async_socket.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\async_socket_ext.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\tokio.rs
+
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src/lib.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\constants.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\socket.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\addr.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\async_socket.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\async_socket_ext.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\netlink-sys-0.8.7\src\tokio.rs:

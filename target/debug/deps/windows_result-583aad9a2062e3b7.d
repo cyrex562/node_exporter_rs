@@ -1,0 +1,11 @@
+D:\projects\node_exporter_rs\target\debug\deps\libwindows_result-583aad9a2062e3b7.rmeta: C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src/lib.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\bindings.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\com.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\strings.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\bstr.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\error.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\hresult.rs
+
+D:\projects\node_exporter_rs\target\debug\deps\windows_result-583aad9a2062e3b7.d: C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src/lib.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\bindings.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\com.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\strings.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\bstr.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\error.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\hresult.rs
+
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src/lib.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\bindings.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\com.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\strings.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\bstr.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\error.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\windows-result-0.2.0\src\hresult.rs:

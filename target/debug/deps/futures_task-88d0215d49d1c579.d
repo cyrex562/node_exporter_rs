@@ -1,0 +1,11 @@
+D:\projects\node_exporter_rs\target\debug\deps\libfutures_task-88d0215d49d1c579.rmeta: C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src/lib.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\spawn.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\arc_wake.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\waker.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\waker_ref.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\future_obj.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\noop_waker.rs
+
+D:\projects\node_exporter_rs\target\debug\deps\futures_task-88d0215d49d1c579.d: C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src/lib.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\spawn.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\arc_wake.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\waker.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\waker_ref.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\future_obj.rs C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\noop_waker.rs
+
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src/lib.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\spawn.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\arc_wake.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\waker.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\waker_ref.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\future_obj.rs:
+C:\Users\cyrex\.cargo\registry\src\index.crates.io-6f17d22bba15001f\futures-task-0.3.31\src\noop_waker.rs:

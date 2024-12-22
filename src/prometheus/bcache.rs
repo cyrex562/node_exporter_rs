@@ -149,3 +149,174 @@ mod tests {
         caches: usize,
     }
 }
+
+// Copyright 2017 The Prometheus Authors
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+use prometheus::{self, Counter, Gauge, Opts, Registry};
+use slog::Logger;
+use std::sync::Arc;
+
+lazy_static! {
+    static ref PRIORITY_STATS: bool = {
+        let matches = clap::App::new("collector")
+            .arg(clap::Arg::with_name("collector.bcache.priorityStats")
+                .long("collector.bcache.priorityStats")
+                .help("Expose expensive priority stats.")
+                .takes_value(false))
+            .get_matches();
+        matches.is_present("collector.bcache.priorityStats")
+    };
+}
+
+pub struct BcacheCollector {
+    fs: Arc<bcache::FS>,
+    logger: Logger,
+}
+
+impl BcacheCollector {
+    pub fn new(logger: Logger) -> Result<Self, Box<dyn std::error::Error>> {
+        let fs = bcache::FS::new("/sys/fs/bcache")?;
+        Ok(BcacheCollector {
+            fs: Arc::new(fs),
+            logger,
+        })
+    }
+
+    pub fn update(&self, registry: &Registry) -> Result<(), Box<dyn std::error::Error>> {
+        let stats = if *PRIORITY_STATS {
+            self.fs.stats()?
+        } else {
+            self.fs.stats_without_priority()?
+        };
+
+        for stat in stats {
+            self.update_bcache_stats(registry, &stat)?;
+        }
+        Ok(())
+    }
+
+    fn update_bcache_stats(
+        &self,
+        registry: &Registry,
+        stat: &bcache::Stats,
+    ) -> Result<(), Box<dyn std::error::Error>> {
+        let subsystem = "bcache";
+        let dev_label = vec!["uuid"];
+
+        let metrics = vec![
+            ("average_key_size_sectors", "Average data per key in the btree (sectors).", stat.bcache.average_key_size as f64, Gauge::new),
+            ("btree_cache_size_bytes", "Amount of memory currently used by the btree cache.", stat.bcache.btree_cache_size as f64, Gauge::new),
+            ("cache_available_percent", "Percentage of cache device without dirty data, usable for writeback (may contain clean cached data).", stat.bcache.cache_available_percent as f64, Gauge::new),
+            ("congested", "Congestion.", stat.bcache.congested as f64, Gauge::new),
+            ("root_usage_percent", "Percentage of the root btree node in use (tree depth increases if too high).", stat.bcache.root_usage_percent as f64, Gauge::new),
+            ("tree_depth", "Depth of the btree.", stat.bcache.tree_depth as f64, Gauge::new),
+            ("active_journal_entries", "Number of journal entries that are newer than the index.", stat.bcache.internal.active_journal_entries as f64, Gauge::new),
+            ("btree_nodes", "Total nodes in the btree.", stat.bcache.internal.btree_nodes as f64, Gauge::new),
+            ("btree_read_average_duration_seconds", "Average btree read duration.", stat.bcache.internal.btree_read_average_duration_nanoseconds as f64 * 1e-9, Gauge::new),
+            ("cache_read_races_total", "Counts instances where while data was being read from the cache, the bucket was reused and invalidated - i.e. where the pointer was stale after the read completed.", stat.bcache.internal.cache_read_races as f64, Counter::new),
+        ];
+
+        for (name, desc, value, metric_type) in metrics {
+            let opts = Opts::new(name, desc).namespace(subsystem).subsystem(subsystem);
+            let metric = metric_type(opts)?;
+            metric.set(value);
+            registry.register(Box::new(metric))?;
+        }
+
+        for bdev in &stat.bdevs {
+            let metrics = vec![
+                ("dirty_data_bytes", "Amount of dirty data for this backing device in the cache.", bdev.dirty_data as f64, Gauge::new),
+                ("dirty_target_bytes", "Current dirty data target threshold for this backing device in bytes.", bdev.writeback_rate_debug.target as f64, Gauge::new),
+                ("writeback_rate", "Current writeback rate for this backing device in bytes.", bdev.writeback_rate_debug.rate as f64, Gauge::new),
+                ("writeback_rate_proportional_term", "Current result of proportional controller, part of writeback rate", bdev.writeback_rate_debug.proportional as f64, Gauge::new),
+                ("writeback_rate_integral_term", "Current result of integral controller, part of writeback rate", bdev.writeback_rate_debug.integral as f64, Gauge::new),
+                ("writeback_change", "Last writeback rate change step for this backing device.", bdev.writeback_rate_debug.change as f64, Gauge::new),
+            ];
+
+            for (name, desc, value, metric_type) in metrics {
+                let opts = Opts::new(name, desc).namespace(subsystem).subsystem(subsystem).const_label("backing_device", &bdev.name);
+                let metric = metric_type(opts)?;
+                metric.set(value);
+                registry.register(Box::new(metric))?;
+            }
+
+            let period_stats_metrics = self.bcache_period_stats_to_metric(&bdev.total, &bdev.name);
+            for (name, desc, value, metric_type) in period_stats_metrics {
+                let opts = Opts::new(name, desc).namespace(subsystem).subsystem(subsystem).const_label("backing_device", &bdev.name);
+                let metric = metric_type(opts)?;
+                metric.set(value);
+                registry.register(Box::new(metric))?;
+            }
+        }
+
+        for cache in &stat.caches {
+            let metrics = vec![
+                ("io_errors", "Number of errors that have occurred, decayed by io_error_halflife.", cache.io_errors as f64, Gauge::new),
+                ("metadata_written_bytes_total", "Sum of all non data writes (btree writes and all other metadata).", cache.metadata_written as f64, Counter::new),
+                ("written_bytes_total", "Sum of all data that has been written to the cache.", cache.written as f64, Counter::new),
+            ];
+
+            for (name, desc, value, metric_type) in metrics {
+                let opts = Opts::new(name, desc).namespace(subsystem).subsystem(subsystem).const_label("cache_device", &cache.name);
+                let metric = metric_type(opts)?;
+                metric.set(value);
+                registry.register(Box::new(metric))?;
+            }
+
+            if *PRIORITY_STATS {
+                let priority_stats_metrics = vec![
+                    ("priority_stats_unused_percent", "The percentage of the cache that doesn't contain any data.", cache.priority.unused_percent as f64, Gauge::new),
+                    ("priority_stats_metadata_percent", "Bcache's metadata overhead.", cache.priority.metadata_percent as f64, Gauge::new),
+                ];
+
+                for (name, desc, value, metric_type) in priority_stats_metrics {
+                    let opts = Opts::new(name, desc).namespace(subsystem).subsystem(subsystem).const_label("cache_device", &cache.name);
+                    let metric = metric_type(opts)?;
+                    metric.set(value);
+                    registry.register(Box::new(metric))?;
+                }
+            }
+        }
+
+        Ok(())
+    }
+
+    fn bcache_period_stats_to_metric(
+        &self,
+        ps: &bcache::PeriodStats,
+        label_value: &str,
+    ) -> Vec<(&str, &str, f64, fn(Opts) -> Result<Box<dyn prometheus::core::Collector>, prometheus::Error>)> {
+        let label = vec!["backing_device"];
+
+        let mut metrics = vec![
+            ("bypassed_bytes_total", "Amount of IO (both reads and writes) that has bypassed the cache.", ps.bypassed as f64, Counter::new),
+            ("cache_hits_total", "Hits counted per individual IO as bcache sees them.", ps.cache_hits as f64, Counter::new),
+            ("cache_misses_total", "Misses counted per individual IO as bcache sees them.", ps.cache_misses as f64, Counter::new),
+            ("cache_bypass_hits_total", "Hits for IO intended to skip the cache.", ps.cache_bypass_hits as f64, Counter::new),
+            ("cache_bypass_misses_total", "Misses for IO intended to skip the cache.", ps.cache_bypass_misses as f64, Counter::new),
+            ("cache_miss_collisions_total", "Instances where data insertion from cache miss raced with write (data already present).", ps.cache_miss_collisions as f64, Counter::new),
+        ];
+
+        if ps.cache_readaheads != 0 {
+            metrics.push((
+                "cache_readaheads_total",
+                "Count of times readahead occurred.",
+                ps.cache_readaheads as f64,
+                Counter::new,
+            ));
+        }
+
+        metrics
+    }
+}
